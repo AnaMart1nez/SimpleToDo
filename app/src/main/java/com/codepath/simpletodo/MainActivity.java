@@ -9,10 +9,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import org.apache.commons.io.FileUtils;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     EditText etItem;
     RecyclerView rvItems;
     ItemsAdapter itemsAdapter;
+    ImageView ic_logo;
+    MainActivity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,21 @@ public class MainActivity extends AppCompatActivity {
         btnAdd = findViewById(R.id.btnAdd);
         etItem = findViewById(R.id.etItem);
         rvItems = findViewById(R.id.rvItems);
+        activity = this;
+        ic_logo = findViewById(R.id.ic_logo);
+        ic_logo.startAnimation(AnimationUtils.loadAnimation(this, R.anim.splash_in));
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ic_logo.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.splash_out));
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ic_logo.setVisibility(View.GONE);
+                    }
+                }, 500);
+            }
+        }, 1500);
 
         loadItems();
 
